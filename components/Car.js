@@ -34,48 +34,45 @@ export default class Car extends React.Component{
         return(
             <View style={styles.container}>
                 <Text style={styles.header}>{this.props.header}</Text>
-                {/* <Button title={this.state.buttonTitle}></Button> */}
 
-                <ScrollView>
-                <Text style={styles.inputTitle}>Make</Text>       
-                <TextInput 
-                style={styles.input}
-                value={this.state.make}
-                onChangeText={(e) => this.setState({make: e})}
-                />
-
-                <Text style={styles.inputTitle}>Model</Text>       
-                <TextInput 
+                <ScrollView style={{backgroundColor: "white"}}>
+                    <Text style={styles.inputTitle}>Make</Text>       
+                    <TextInput 
                     style={styles.input}
-                    value={this.state.model}
-                    onChangeText={(e) => this.setState({model: e})}
-                />
+                    value={this.state.make}
+                    onChangeText={(e) => this.setState({make: e})}
+                    />
 
-                <Text style={styles.inputTitle}>Year</Text>       
-                <TextInput 
-                style={styles.input}
-                value={this.state.year}
-                onChangeText={(e) => this.setState({year: e})}
-                />
+                    <Text style={styles.inputTitle}>Model</Text>       
+                    <TextInput 
+                        style={styles.input}
+                        value={this.state.model}
+                        onChangeText={(e) => this.setState({model: e})}
+                    />
 
-                <Text style={styles.inputTitle}>Odometer</Text>       
-                <TextInput 
+                    <Text style={styles.inputTitle}>Year</Text>       
+                    <TextInput 
                     style={styles.input}
-                    value={this.state.odometer}
-                    onChangeText={(e) => this.setState({odometer: e})}
-                />
+                    value={this.state.year}
+                    onChangeText={(e) => this.setState({year: e})}
+                    />
+
+                    <Text style={styles.inputTitle}>Odometer</Text>       
+                    <TextInput 
+                        style={styles.input}
+                        value={this.state.odometer}
+                        onChangeText={(e) => this.setState({odometer: e})}
+                    />
                 </ScrollView> 
 
                 <TouchableOpacity
                     style={styles.pressable}
-                    onPress={this.submission}
-                    >
+                    onPress={this.submission}>
                     <Text style={{color: "white"}}>{this.state.buttonTitle} </Text>
                 </TouchableOpacity>
             </View>
         )
     }
-    
 }
 
 
