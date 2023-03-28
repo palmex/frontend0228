@@ -7,7 +7,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.title} >Welcome Class of Stellantis-OU Module 3!</Text>
-      <Car></Car>
+      <Car header={"Car Submission Form"}></Car>
     </View>
   );
 
