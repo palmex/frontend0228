@@ -19,8 +19,10 @@ export default class Car extends React.Component{
         this.submission = this.submission.bind(this)
     }
 
-    submission = () => {
+    async submission(){
         console.log("state: ", this.state)
+        const newCar = await addNewCar(this.state.make,this.state.model,this.state.year,this.state.odometer)
+        console.log('response from server!', newCar)
         // if (!this.state.buttonStatus){
         //     this.setState({buttonTitle: "On"})
         // } else {
@@ -75,6 +77,44 @@ export default class Car extends React.Component{
     }
 }
 
+
+// fetch API Calls
+async function addNewCar(make, model, year, odometer){
+
+    let reqHeaders = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Origin': 'http://localhost:3000/*',
+    }
+
+    let reqBody = {
+        "make":make,
+        "model":model,
+        "year":year,
+        "odometer":odometer
+    }
+
+    return fetch("http://localhost:3000/cars/new", {
+        method: 'POST', 
+        withCredentials: true,
+        headers: reqHeaders,
+        body: JSON.stringify(reqBody)
+    }).then(response => {
+        if (response.ok){
+            return response.json()
+        } else {
+            var error = new Error(response.status + ":"  + response.statusText)
+            error.response = response
+            throw error
+        }
+
+    }, error => {
+        var errmess = new Error(error.message)
+        throw errmess
+    })
+}
 
 // use Stylesheet to style our component
 const styles = StyleSheet.create({
