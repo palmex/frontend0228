@@ -33,15 +33,12 @@ export default class Car extends React.Component{
         
         // if (!this.state.make.match(/^([a-z]{5,})$/)) {
         //     alert("Please enter correct make!");
+                // return
         // }
         if (this.state.model == "") {
             alert("Please enter a model!");
+            return
         }
-        
-
-        {this.state.carsArray.map((car) => 
-                         <Text key={car.car_id}>{car.make}</Text>
-                    )}
 
         const newCar = await addNewCar(this.state.make,this.state.model,this.state.year,this.state.odometer)
         console.log('response from server!', newCar)
