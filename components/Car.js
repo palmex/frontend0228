@@ -17,6 +17,7 @@ export default class Car extends React.Component{
             odometer: "",
         }
         this.submission = this.submission.bind(this)
+        // remember to add a new state & bind the new function
     }
 
     async submission(){
@@ -28,8 +29,10 @@ export default class Car extends React.Component{
         // } else {
         //     this.setState({buttonTitle: "Off"}) 
         // }
-        // this.setState({buttonStatus: !this.state.buttonStatus}) 
+        // this.setState({buttonStatus: !this.state.buttonStatus})
     }
+
+    // we need another function here
 
     // render our GUI
     render(){
@@ -72,6 +75,11 @@ export default class Car extends React.Component{
                     onPress={this.submission}>
                     <Text style={{color: "white"}}>{this.state.buttonTitle} </Text>
                 </TouchableOpacity>
+
+
+                {/* 1. Add a new button that fetches all cars */}
+                {/* 2. Take the response and render it to the user */}
+                {/* we'll need a mapping function to render the respones array */}
             </View>
         )
     }
@@ -79,6 +87,9 @@ export default class Car extends React.Component{
 
 
 // fetch API Calls
+// we need another fetch call here
+
+
 async function addNewCar(make, model, year, odometer){
 
     let reqHeaders = {
