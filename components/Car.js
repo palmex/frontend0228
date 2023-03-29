@@ -1,5 +1,5 @@
 // import dependencies
-import { StyleSheet, Text, View, Button,TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { StyleSheet, Text, View,Alert, Modal, Button,TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import React from "react";
 
 // define & build (& export) functionality of component
@@ -15,13 +15,34 @@ export default class Car extends React.Component{
             model: "",
             year: "",
             odometer: "",
+            carsArray: [],
+            error: false
         }
         this.submission = this.submission.bind(this)
+        this.testAlert = this.testAlert.bind(this)
+        this.query = this.query.bind(this)
         // remember to add a new state & bind the new function
     }
 
     async submission(){
         console.log("state: ", this.state)
+        if(isNaN(this.state.year)){
+            alert("Please enter a correct year")
+            return
+        }
+        
+        // if (!this.state.make.match(/^([a-z]{5,})$/)) {
+        //     alert("Please enter correct make!");
+        // }
+        if (this.state.model == "") {
+            alert("Please enter a model!");
+        }
+        
+
+        {this.state.carsArray.map((car) => 
+                         <Text key={car.car_id}>{car.make}</Text>
+                    )}
+
         const newCar = await addNewCar(this.state.make,this.state.model,this.state.year,this.state.odometer)
         console.log('response from server!', newCar)
         // if (!this.state.buttonStatus){
@@ -30,6 +51,24 @@ export default class Car extends React.Component{
         //     this.setState({buttonTitle: "Off"}) 
         // }
         // this.setState({buttonStatus: !this.state.buttonStatus})
+    }
+
+    async query(){
+        console.log("state: ", this.state)
+        const cars = await getCars()
+        console.log('response from server!', cars)
+        this.setState({carsArray: cars})
+        // if (!this.state.buttonStatus){
+        //     this.setState({buttonTitle: "On"})
+        // } else {
+        //     this.setState({buttonTitle: "Off"}) 
+        // }
+        // this.setState({buttonStatus: !this.state.buttonStatus})
+    }
+
+    testAlert(){
+        console.log("alert")
+        alert('alert!');
     }
 
     // we need another function here
@@ -68,7 +107,12 @@ export default class Car extends React.Component{
                         value={this.state.odometer}
                         onChangeText={(e) => this.setState({odometer: e})}
                     />
+
+                    
                 </ScrollView> 
+                {this.state.carsArray.map((car) => 
+                         <Text key={car.car_id}>{car.make} {car.model} - {car.year} with {car.odometer} miles.</Text>
+                    )}
 
                 <TouchableOpacity
                     style={styles.pressable}
@@ -76,7 +120,17 @@ export default class Car extends React.Component{
                     <Text style={{color: "white"}}>{this.state.buttonTitle} </Text>
                 </TouchableOpacity>
 
+                <TouchableOpacity
+                    style={styles.pressable}
+                    onPress={this.query}>
+                    <Text style={{color: "white"}}>Query </Text>
+                </TouchableOpacity>
+                {/* <Button onPress={this.testAlert} title={"testAlert"}></Button> */}
 
+                {/* <ScrollView style={{backgroundColor: "white"}}> */}
+                    
+                {/* </ScrollView> */}
+                
                 {/* 1. Add a new button that fetches all cars */}
                 {/* 2. Take the response and render it to the user */}
                 {/* we'll need a mapping function to render the respones array */}
@@ -89,6 +143,37 @@ export default class Car extends React.Component{
 // fetch API Calls
 // we need another fetch call here
 
+
+
+async function getCars(){
+
+    let reqHeaders = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Origin': 'http://localhost:3000/*',
+    }
+
+
+    return fetch("http://localhost:3000/cars/all", {
+        method: 'GET', 
+        withCredentials: true,
+        headers: reqHeaders,
+    }).then(response => {
+        if (response.ok){
+            return response.json()
+        } else {
+            var error = new Error(response.status + ":"  + response.statusText)
+            error.response = response
+            throw error
+        }
+
+    }, error => {
+        var errmess = new Error(error.message)
+        throw errmess
+    })
+}
 
 async function addNewCar(make, model, year, odometer){
 
@@ -135,7 +220,7 @@ const styles = StyleSheet.create({
       borderRadius: 10,
     //   borderColor: "black",
     //   borderWidth: 1,
-      maxHeight: "75%",
+      maxHeight: "90%",
       width: "90%",
       alignItems: 'center',
       justifyContent: 'center',
